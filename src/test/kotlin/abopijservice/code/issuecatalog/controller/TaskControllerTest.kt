@@ -31,7 +31,7 @@ class TaskControllerTest {
     fun `POST api tasks returns 201 with created task`() {
         whenever(taskService.createTask("Test task", "description")).thenReturn(Mono.just(taskResponse))
 
-        webTestClient.post().uri("/api/tasks")
+        webTestClient.post().uri("/api/v1/tasks")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("""{"title":"Test task","description":"description"}""")
             .exchange()
@@ -44,7 +44,7 @@ class TaskControllerTest {
 
     @Test
     fun `POST api tasks returns 400 for blank title`() {
-        webTestClient.post().uri("/api/tasks")
+        webTestClient.post().uri("/api/v1/tasks")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("""{"title":""}""")
             .exchange()
@@ -53,7 +53,7 @@ class TaskControllerTest {
 
     @Test
     fun `POST api tasks returns 400 for title shorter than 3 characters`() {
-        webTestClient.post().uri("/api/tasks")
+        webTestClient.post().uri("/api/v1/tasks")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("""{"title":"ab"}""")
             .exchange()
@@ -63,7 +63,7 @@ class TaskControllerTest {
     @Test
     fun `POST api tasks returns 400 for title longer than 100 characters`() {
         val longTitle = "a".repeat(101)
-        webTestClient.post().uri("/api/tasks")
+        webTestClient.post().uri("/api/v1/tasks")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("""{"title":"$longTitle"}""")
             .exchange()
@@ -74,7 +74,7 @@ class TaskControllerTest {
     fun `GET api tasks id returns 200 with task`() {
         whenever(taskService.getTaskById(1L)).thenReturn(Mono.just(taskResponse))
 
-        webTestClient.get().uri("/api/tasks/1")
+        webTestClient.get().uri("/api/v1/tasks/1")
             .exchange()
             .expectStatus().isOk
             .expectBody()
@@ -87,7 +87,7 @@ class TaskControllerTest {
         whenever(taskService.getTaskById(99L))
             .thenReturn(Mono.error(TaskNotFoundException(99L)))
 
-        webTestClient.get().uri("/api/tasks/99")
+        webTestClient.get().uri("/api/v1/tasks/99")
             .exchange()
             .expectStatus().isNotFound
             .expectBody()
@@ -99,7 +99,7 @@ class TaskControllerTest {
         val page = PageResponse(listOf(taskResponse), 0, 10, 1L, 1)
         whenever(taskService.getTasks(0, 10, null)).thenReturn(Mono.just(page))
 
-        webTestClient.get().uri("/api/tasks?page=0&size=10")
+        webTestClient.get().uri("/api/v1/tasks?page=0&size=10")
             .exchange()
             .expectStatus().isOk
             .expectBody()
@@ -114,7 +114,7 @@ class TaskControllerTest {
         val page = PageResponse(listOf(taskResponse), 0, 10, 1L, 1)
         whenever(taskService.getTasks(0, 10, TaskStatus.NEW)).thenReturn(Mono.just(page))
 
-        webTestClient.get().uri("/api/tasks?page=0&size=10&status=NEW")
+        webTestClient.get().uri("/api/v1/tasks?page=0&size=10&status=NEW")
             .exchange()
             .expectStatus().isOk
             .expectBody()
@@ -126,7 +126,7 @@ class TaskControllerTest {
         val updated = taskResponse.copy(status = TaskStatus.DONE)
         whenever(taskService.updateStatus(1L, TaskStatus.DONE)).thenReturn(Mono.just(updated))
 
-        webTestClient.patch().uri("/api/tasks/1/status")
+        webTestClient.patch().uri("/api/v1/tasks/1/status")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("""{"status":"DONE"}""")
             .exchange()
@@ -140,7 +140,7 @@ class TaskControllerTest {
         whenever(taskService.updateStatus(99L, TaskStatus.DONE))
             .thenReturn(Mono.error(TaskNotFoundException(99L)))
 
-        webTestClient.patch().uri("/api/tasks/99/status")
+        webTestClient.patch().uri("/api/v1/tasks/99/status")
             .contentType(MediaType.APPLICATION_JSON)
             .bodyValue("""{"status":"DONE"}""")
             .exchange()
@@ -151,7 +151,7 @@ class TaskControllerTest {
     fun `DELETE api tasks id returns 204`() {
         whenever(taskService.deleteTask(1L)).thenReturn(Mono.empty())
 
-        webTestClient.delete().uri("/api/tasks/1")
+        webTestClient.delete().uri("/api/v1/tasks/1")
             .exchange()
             .expectStatus().isNoContent
     }
@@ -161,7 +161,7 @@ class TaskControllerTest {
         whenever(taskService.deleteTask(99L))
             .thenReturn(Mono.error(TaskNotFoundException(99L)))
 
-        webTestClient.delete().uri("/api/tasks/99")
+        webTestClient.delete().uri("/api/v1/tasks/99")
             .exchange()
             .expectStatus().isNotFound
     }

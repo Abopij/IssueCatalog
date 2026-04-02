@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/v1/tasks")
 class TaskController(private val taskService: TaskService) {
 
     @PostMapping
