@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./mvnw compile:*)",
+      "Bash(./mvnw test:*)",
+      "Bash(./mvnw test-compile:*)",
+      "Bash(./mvnw dependency:tree -Dscope=test)",
+      "Bash(find ~/.m2/repository/org/springframework/boot -name spring-boot-test-autoconfigure-4*.jar)",
+      "Bash(jar tf:*)",
+      "Bash(./mvnw dependency:resolve -Dclassifier=sources -Dartifact=org.springframework.boot:spring-boot-test-autoconfigure:4.0.5)",
+      "Bash(python3 -c \":*)",
+      "Bash(powershell -Command \":*)",
+      "Bash(powershell -Command \"Add-Type -AssemblyName System.IO.Compression.FileSystem; $zip = [System.IO.Compression.ZipFile]::OpenRead\\(''C:\\\\Users\\\\user\\\\.m2\\\\repository\\\\org\\\\springframework\\\\boot\\\\spring-boot-test-autoconfigure\\\\4.0.5\\\\spring-boot-test-autoconfigure-4.0.5.jar''\\); $zip.Entries | Select-Object -ExpandProperty FullName | Where-Object { $_-match ''Web'' }; $zip.Dispose\\(\\)\")",
+      "Bash(./mvnw dependency:unpack -Dartifact=org.springframework.boot:spring-boot-test-autoconfigure:4.0.5:jar -DoutputDirectory=/tmp/sb-test-auto)",
+      "Read(//tmp/sb-test-auto/org/springframework/boot/test/**)",
+      "Bash(./mvnw dependency:unpack -Dartifact=org.springframework.boot:spring-boot-starter-webflux-test:4.0.5:jar -DoutputDirectory=/tmp/sb-webflux-test)",
+      "Read(//tmp/**)",
+      "Bash(./mvnw dependency:unpack -Dartifact=org.springframework.boot:spring-boot-webflux-test:4.0.5:jar -DoutputDirectory=/tmp/sb-webflux-test2)",
+      "Bash(java -version)",
+      "Bash(./mvnw --version)",
+      "Bash(find ~/.m2/repository/tools/jackson -name *.jar)",
+      "Bash(find ~/.m2/repository/tools/jackson -name *.pom)",
+      "Bash(./mvnw clean:*)"
+    ]
+  }
+}
